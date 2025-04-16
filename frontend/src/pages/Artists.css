@@ -1,0 +1,188 @@
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Define CSS variables for light and dark themes */
+:root {
+    --bg-color: #ffffff;
+    --text-color: #333333;
+    --secondary-text-color: #666666;
+    --border-color: #e0e0e0;
+}
+
+body.dark-mode {
+    --bg-color: #121212;
+    --text-color: #ffffff;
+    --secondary-text-color: #cccccc;
+    --border-color: #333333;
+}
+
+.artists-container {
+    display: flex;
+    flex-direction: column; /* Ensure heading is above cards */
+    align-items: center; /* Center-align content */
+    padding: 20px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+/* Artists Heading */
+.artists-heading {
+    font-size: 2rem; /* Large font size */
+    color: var(--text-color); /* Dynamic text color */
+    margin-bottom: 20px; /* Add spacing below the heading */
+    text-align: center; /* Center-align text */
+    width: 100%; /* Full width for consistent alignment */
+    border-bottom: 2px solid var(--border-color); /* Optional: Add a subtle separator */
+    padding-bottom: 10px; /* Add padding below the heading */
+}
+
+/* Dark Mode Toggle Button */
+/* .dark-mode-toggle {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    padding: 10px 10px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dark-mode-toggle:hover {
+    background-color: var(--text-color);
+    color: var(--bg-color);
+} */
+
+/* Filter Dropdown Container */
+.filter-container {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Label for Filter Dropdown */
+.filter-label {
+    margin-right: 10px;
+    font-size: 1rem;
+    color: var(--text-color);
+}
+
+/* Select Dropdown */
+#category-filter {
+    padding: 5px;
+    font-size: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#category-filter:focus {
+    border-color: #007bff; /* Blue outline for focus */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Subtle glow */
+}
+
+/* Artist Grid */
+.artist-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid layout */
+    gap: 20px; /* Add spacing between cards */
+    width: 100%;
+    max-width: 1200px; /* Limit maximum width */
+}
+
+/* Artist Card */
+.artist-card {
+    background-color: var(--bg-color); /* Dynamic background color */
+    border: 1px solid var(--border-color); /* Light border */
+    border-radius: 15px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    overflow: hidden; /* Ensure images don't overflow */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+    text-align: center;
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+.artist-card:hover {
+    transform: translateY(-10px); /* Lift the card slightly */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+}
+
+/* Profile Picture */
+.artist-card img {
+    width: 100%; /* Full width */
+    height: 200px; /* Fixed height */
+    object-fit: cover; /* Maintain aspect ratio */
+    border-bottom: 1px solid var(--border-color); /* Separator between image and text */
+    background-color: #f0f0f0; /* Neutral background for missing images */
+}
+
+/* Artist Name */
+.artist-card h3 {
+    font-size: 1.2rem;
+    margin: 15px 0 5px 0;
+    color: var(--text-color); /* Dynamic text color */
+}
+
+/* Bio */
+.artist-card p {
+    font-size: 0.9rem;
+    color: var(--secondary-text-color); /* Dynamic secondary text color */
+    padding: 0 15px 15px 15px; /* Add padding for spacing */
+    line-height: 1.5; /* Improve readability */
+}
+
+/* Loading and Error Messages */
+.loading-message,
+.error-message,
+.no-artists-message {
+    text-align: center;
+    font-size: 1.2rem;
+    color: var(--text-color); /* Dynamic text color */
+}
+
+.error-message {
+    color: white;
+    background-color: #e74c3c; /* Red background */
+    padding: 10px;
+    border-radius: 5px;
+    display: inline-block;
+    margin: 10px auto;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid #ccc;
+    border-top-color: #333;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-right: 10px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .artist-grid {
+        grid-template-columns: repeat(2, 1fr); /* Two columns on smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .artist-grid {
+        grid-template-columns: 1fr; /* One column on very small screens */
+    }
+}

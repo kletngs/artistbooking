@@ -1,0 +1,85 @@
+/* Global Reset */
+
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--bg-color); /* Use CSS variable */
+    color: var(--text-color); /* Use CSS variable */
+    margin: 0;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transitions */
+}
+
+/* Register Container */
+/* Register Container */
+.register-container {
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Center horizontally */
+    height: 100vh; /* Full viewport height */
+    background-color: var(--bg-color); /* Matches the body background */
+}
+
+/* Heading */
+.register-container h2 {
+    font-size: 1.5rem;
+    color: var(--text-color); /* Use CSS variable */
+    margin-bottom: 1.5rem; /* Space between heading and form */
+    text-align: center; /* Ensure text is centered */
+}
+
+/* Form */
+.register-container form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 400px; /* Limit form width */
+    padding: 1.5rem;
+    background: var(--form-bg-color); /* Use CSS variable for form background */
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+/* Labels */
+.register-container label {
+    font-weight: bold;
+    margin-bottom: 0.5rem; /* Space between label and input */
+    color: var(--text-color); /* Use CSS variable */
+    display: block; /* Ensure labels take up their own line */
+}
+
+/* Inputs */
+.register-container input[type="text"],
+.register-container input[type="email"],
+.register-container input[type="password"] {
+    padding: 0.75rem; /* Consistent padding inside inputs */
+    margin-bottom: 1rem; /* Space between inputs */
+    border: 1px solid var(--input-border-color); /* Use CSS variable */
+    border-radius: 4px;
+    font-size: 1rem; /* Match label font size */
+    transition: border-color 0.3s ease;
+    width: 100%; /* Ensure inputs span the full width */
+    background-color: var(--input-bg-color); /* Use CSS variable */
+    color: var(--text-color); /* Use CSS variable */
+}
+
+.register-container input:focus {
+    border-color: var(--primary-color); /* Highlight on focus */
+    outline: none;
+}
+
+/* Submit Button */
+.register-container button[type="submit"] {
+    padding: 0.75rem;
+    background-color: var(--primary-color); /* Use CSS variable */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.register-container button:hover {
+    background-color: var(--hover-color); /* Use CSS variable */
+}

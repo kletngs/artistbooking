@@ -1,0 +1,62 @@
+/* Global Variables */
+:root {
+  --bg-color: #ffffff; /* Light background */
+  --text-color: #333; /* Dark text */
+  --secondary-text-color: #666; /* Light gray text */
+  --primary-color: #007bff; /* Primary button/color */
+}
+
+body.dark-mode {
+  --bg-color: #121212; /* Dark background */
+  --text-color: #ffffff; /* White text */
+  --secondary-text-color: #cccccc; /* Light gray text */
+  --primary-color: #bb86fc; /* Adjust primary color for dark mode */
+}
+
+/* Home Container */
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh; /* Center vertically */
+  text-align: center;
+  background-color: var(--bg-color); /* Use CSS variable */
+  color: var(--text-color); /* Use CSS variable */
+  padding: 20px;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transitions */
+}
+
+/* Home Title */
+.home-title {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  color: var(--text-color); /* Use CSS variable */
+}
+
+/* Home Description */
+.home-description {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  color: var(--secondary-text-color); /* Use CSS variable */
+}
+
+/* Home Buttons */
+.home-button {
+  display: inline-block;
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #fff;
+  background-color: var(--primary-color); /* Use CSS variable */
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.home-button:hover {
+  background-color: #0056b3; /* Darken on hover */
+}

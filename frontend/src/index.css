@@ -1,0 +1,47 @@
+/* Define CSS variables for light and dark themes */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+:root {
+  --bg-color: #ffffff; /* Light background */
+  --text-color: #333333; /* Dark text */
+  --secondary-text-color: #666666; /* Light gray text */
+  --primary-color: #007bff; /* Primary button/color */
+  --form-bg-color: #ffffff; /* White form background */
+  --input-bg-color: #ffffff; /* White input background */
+  --input-border-color: #ccc; /* Light gray input border */
+  --hover-color: #0056b3; /* Darker blue on hover */
+  --navbar-bg-color: #2a2a2a; /* Dark blue navbar background */
+  --navbar-text-color: #ffffff; /* White navbar text */
+}
+
+body.dark-mode {
+  --bg-color: #121212;
+  --text-color: #ffffff;
+  --secondary-text-color: #cccccc;
+  --primary-color: #bb86fc;
+  --form-bg-color: #1e1e1e;
+  --input-bg-color: #333;
+  --input-border-color: #444;
+  --hover-color: #7c4dff;
+  --navbar-bg-color: #2a2a2a;
+  --navbar-text-color: #ffffff;
+}
+
+/* Apply global styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+.form-container {
+  background-color: var(--bg-color); /* Dynamic background color */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;
+}

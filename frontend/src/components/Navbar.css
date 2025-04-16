@@ -1,0 +1,141 @@
+/* Navbar Container */
+.navbar {
+  display: flex;
+  justify-content: space-between; /* Space between logo, links, and buttons */
+  align-items: center;
+  padding: 10px 20px;
+  background-color: var(--navbar-bg-color); /* Use CSS variable for background */
+  color: var(--navbar-text-color); /* Use CSS variable for text */
+}
+
+/* Logo Styling */
+.navbar-logo img {
+  height: 40px; /* Adjust logo size */
+  width: auto; /* Maintain aspect ratio */
+  object-fit: contain; /* Ensure proper scaling */
+}
+
+/* Navigation Links */
+.navbar-links {
+  display: flex;
+  gap: 40px; /* Reduced spacing between links */
+  list-style: none; /* Remove bullet points */
+  margin: 0;
+  padding: 0;
+  align-items: center; /* Align items vertically */
+}
+
+.navbar-links li {
+  position: relative;
+}
+
+.navbar-links a {
+  text-decoration: none;
+  color: var(--navbar-text-color); /* Use CSS variable for text */
+  font-size: 1rem;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.navbar-links a:hover {
+  color: var(--primary-color); /* Highlight on hover */
+}
+
+/* Active Link Styling */
+.active-link {
+  color: var(--primary-color) !important; /* Use CSS variable for active link */
+}
+
+/* Auth Link Styling */
+.auth-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-right: 20px; /* Add spacing between auth section and dark mode toggle */
+}
+
+.user-name {
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--navbar-text-color); /* Use CSS variable for text */
+  white-space: nowrap; /* Prevent text wrapping */
+}
+
+.logout-button {
+  background-color: transparent;
+  color: var(--navbar-text-color); /* Use CSS variable for text */
+  border: 2px solid var(--navbar-text-color); /* Use CSS variable for border */
+  padding: 5px 10px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.logout-button:hover {
+  background-color: var(--primary-color); /* Use CSS variable for hover background */
+  color: #ffffff;
+}
+
+/* Dark Mode Toggle Button */
+.dark-mode-container {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Add spacing between toggle and label/icon */
+  /* margin-left: auto;  */
+  padding: 5px; /* Add some padding for better spacing */
+}
+
+.dark-mode-toggle {
+    position: fixed;
+    top:13px;
+    right: 20px;
+    padding: 10px 10px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dark-mode-toggle:hover {
+    background-color: var(--text-color);
+    color: var(--bg-color);
+}
+
+/* Responsive Design */
+
+/* Hide navigation links and show hamburger menu on smaller screens */
+@media (max-width: 768px) {
+  .navbar-links {
+      display: none; /* Hide links by default */
+      flex-direction: column;
+      gap: 20px;
+      background-color: var(--navbar-bg-color); /* Use CSS variable for background */
+      position: absolute;
+      top: 60px; /* Position below the navbar */
+      right: 0;
+      width: 100%;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .navbar-links.active {
+      display: flex; /* Show links when active */
+  }
+
+  .hamburger-menu {
+      display: block; /* Show hamburger menu */
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--navbar-text-color); /* Use CSS variable for text */
+  }
+}
+
+/* Hide hamburger menu on larger screens */
+@media (min-width: 769px) {
+  .hamburger-menu {
+      display: none; /* Hide hamburger menu */
+  }
+}
