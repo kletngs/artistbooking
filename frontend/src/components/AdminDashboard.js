@@ -17,7 +17,7 @@ const AdminDashboard = () => {
     useEffect(() => {
         const fetchArtists = async () => {
             try {
-                const response = await axios.get('/api/admin/artists', {
+                const response = await axios.get('/api/artists', {
                     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
                 });
                 setArtists(response.data);

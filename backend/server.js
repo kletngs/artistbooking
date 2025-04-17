@@ -35,25 +35,21 @@ mongoose.connect(MONGODB_URI, {
 
 // Import Routes
 const usersRouter = require('./routes/users');
-const artistsRouter = require('./routes/artists');
+const artistsRouter = require('./routes/artists'); // Corrected import path
 const bookingsRouter = require('./routes/bookings');
 const categoriesRouter = require('./routes/categories');
-const adminRouter = require('./routes/admin');
 const authRouter = require('./routes/auth');
-const orderRoutes = require('./routes/orderRoutes'); // Import order routes
+const orderRoutes = require('./routes/orderRoutes');
 const artistRoutes = require('./routes/artistRoutes');
-
 
 // Use Routes
 app.use('/api/users', usersRouter);
-app.use('/api/artists', artistsRouter);
+app.use('/api/artists', artistsRouter); // Corrected route path
 app.use('/api/bookings', bookingsRouter);
 app.use('/api/categories', categoriesRouter);
-app.use('/api/admin', adminRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/orders', orderRoutes);
-app.use('/api/artists', artistRoutes);
-
+app.use('/api/artist', artistRoutes);
 
 // Serve Static Files (e.g., uploaded images)
 app.use('/uploads', express.static(path.join(__dirname, 'public', 'uploads')));
@@ -65,6 +61,7 @@ app.get('/', (req, res) => {
 
 // Handle Undefined Routes (404)
 app.use((req, res) => {
+    console.error(`Route not found: ${req.originalUrl}`);
     res.status(404).json({ message: 'Route not found' });
 });
 

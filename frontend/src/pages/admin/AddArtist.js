@@ -47,8 +47,8 @@ const AddArtist = () => {
             return;
         }
 
-        if (formData.password.length < 6) {
-            alert('Password must be at least 6 characters long.');
+        if (formData.password.length < 3) {
+            alert('Password must be at least 3 characters long.');
             return;
         }
 
@@ -62,7 +62,7 @@ const AddArtist = () => {
             formDataToSend.append('profilePicture', formData.profilePicture);
             formDataToSend.append('password', formData.password); // Add password
 
-            await axios.post('/api/admin/artists', formDataToSend, {
+            await axios.post('/api/artists', formDataToSend, {
                 headers: { Authorization: `Bearer ${token}` },
             });
 

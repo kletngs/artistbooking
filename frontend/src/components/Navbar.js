@@ -69,15 +69,17 @@ const Navbar = () => {
                         Захиалга өгөх
                     </NavLink>
                 </li>
-                <li>
-                    <NavLink
-                        to="/user/orders"
-                        className={({ isActive }) => (isActive ? 'active-link' : '')}
-                        onClick={() => setIsMenuOpen(false)} // Close menu on link click
-                    >
-                        Миний захиалгууд
-                    </NavLink>
-                </li>
+                {user && (
+    <li>
+        <NavLink
+            to="/user/orders"
+            className={({ isActive }) => (isActive ? 'active-link' : '')}
+            onClick={() => setIsMenuOpen(false)}
+        >
+            Миний захиалгууд
+        </NavLink>
+    </li>
+)}
                 <li>
                     <NavLink
                         to="/contact"

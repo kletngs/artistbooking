@@ -9,11 +9,19 @@ const artistSchema = new mongoose.Schema({
     pricePerHour: { type: Number, required: true },
     bio: { type: String, default: '' },
     profilePicture: { type: String, default: '' },
-    availability: { type: [Date], default: [] },
+    availability: [
+        {
+            date: Date,
+            startTime: String, // e.g., "10:00"
+            endTime: String,   // e.g., "12:00"
+        },
+    ],
     bookings: [
         {
             orderId: { type: mongoose.Schema.Types.ObjectId, ref: 'Order' },
             date: Date,
+            startTime: String, // e.g., "10:00"
+            endTime: String,   // e.g., "12:00"
             location: String,
             totalPrice: Number,
             status: { type: String, enum: ['Pending', 'Completed', 'Cancelled'], default: 'Pending' },
@@ -23,7 +31,6 @@ const artistSchema = new mongoose.Schema({
 
 // Pre-save hook to hash the password
 artistSchema.pre('save', async function (next) {
-    console.log('Pre-save hook triggered');
     if (!this.isModified('password')) return next();
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);

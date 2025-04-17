@@ -5,15 +5,18 @@ import { useNavigate } from 'react-router-dom';
 
 const PlaceOrder = () => {
     const [artists, setArtists] = useState([]); // List of all artists
-    const [selectedArtist, setSelectedArtist] = useState(null); // Selected artist details
-    const [availability, setAvailability] = useState([]); // Artist's availability
+    const [availability, setAvailability] = useState([]); // Artist's availability (with time slots)
+    const [selectedTimeSlot, setSelectedTimeSlot] = useState(null); // Selected time slot
     const [formData, setFormData] = useState({
         artistId: '',
         date: '',
+        startTime: '',
+        endTime: '',
         location: '',
         totalPrice: 0,
     });
     const [error, setError] = useState(''); // Error message
+    const [loading, setLoading] = useState(false); // Loading state
     const { token } = useAuth();
     const navigate = useNavigate();
 
@@ -37,12 +40,9 @@ const PlaceOrder = () => {
 
         const fetchAvailability = async () => {
             try {
-                const response = await axios.get(`/api/artists/${formData.artistId}/availability`);
-                setAvailability(response.data.availability);
-
-                // Find the selected artist details
-                const artist = artists.find((a) => a._id === formData.artistId);
-                setSelectedArtist(artist);
+                const response = await axios.get(`/api/artist/${formData.artistId}/availability`);
+                console.log('Availability Response:', response.data); // Log the response
+                setAvailability(response.data.availability || []);
             } catch (err) {
                 console.error('Error fetching availability:', err.response?.data || err.message);
                 setError('Failed to fetch artist availability. Please try again.');
@@ -50,33 +50,52 @@ const PlaceOrder = () => {
         };
 
         fetchAvailability();
-    }, [formData.artistId, artists]);
+    }, [formData.artistId]);
 
     // Handle form input changes
     const handleChange = (e) => {
         const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    };
 
-        // Reset date selection if artist changes
-        if (name === 'artistId') {
-            setFormData({ ...formData, artistId: value, date: '' });
-        } else {
-            setFormData({ ...formData, [name]: value });
-        }
+    // Handle time slot selection
+    const handleTimeSlotChange = (slot) => {
+        setSelectedTimeSlot(slot);
+        setFormData({
+            ...formData,
+            date: slot.date,
+            startTime: slot.startTime,
+            endTime: slot.endTime,
+        });
     };
 
     // Handle placing an order
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!availability.includes(formData.date)) {
-            setError('Selected date is not available. Please choose another date.');
+        if (!selectedTimeSlot) {
+            setError('Please select a valid time slot.');
             return;
         }
+
+        if (formData.totalPrice <= 0) {
+            setError('Total price must be greater than 0.');
+            return;
+        }
+
+        setLoading(true); // Start loading
 
         try {
             await axios.post(
                 '/api/orders',
-                { ...formData, totalPrice: parseFloat(formData.totalPrice) }, // Ensure totalPrice is a number
+                {
+                    artistId: formData.artistId,
+                    date: formData.date,
+                    startTime: formData.startTime,
+                    endTime: formData.endTime,
+                    location: formData.location,
+                    totalPrice: parseFloat(formData.totalPrice),
+                },
                 {
                     headers: { Authorization: `Bearer ${token}` },
                 }
@@ -84,9 +103,27 @@ const PlaceOrder = () => {
 
             alert('Order placed successfully!');
             navigate('/user/orders'); // Redirect to user's orders page
+
+            // Reset form fields
+            setFormData({
+                artistId: '',
+                date: '',
+                startTime: '',
+                endTime: '',
+                location: '',
+                totalPrice: 0,
+            });
+            setSelectedTimeSlot(null);
+            setError('');
         } catch (err) {
-            console.error('Error placing order:', err.response?.data || err.message);
-            setError('Failed to place order. Please try again.');
+            if (err.response?.data?.error) {
+                setError(err.response.data.error); // Backend validation error
+            } else {
+                setError('An unexpected error occurred. Please try again.'); // Generic error
+            }
+            console.error('Error placing order:', err.message);
+        } finally {
+            setLoading(false); // Stop loading
         }
     };
 
@@ -118,14 +155,35 @@ const PlaceOrder = () => {
                     ))}
                 </select>
 
-                {/* Display Availability */}
+                {/* Display Availability with Time Slots */}
                 {formData.artistId && (
                     <div style={{ marginBottom: '15px' }}>
-                        <label style={styles.label}>Available Dates:</label>
+                        <label style={styles.label}>Available Time Slots:</label>
                         {availability.length > 0 ? (
                             <ul style={{ listStyle: 'none', padding: 0 }}>
-                                {availability.map((date) => (
-                                    <li key={date}>{date}</li>
+                                {availability.map((slot, index) => (
+                                    <li key={index}>
+                                        <button
+                                            type="button"
+                                            onClick={() => handleTimeSlotChange(slot)}
+                                            style={{
+                                                padding: '5px 10px',
+                                                backgroundColor:
+                                                    selectedTimeSlot?.date === slot.date &&
+                                                    selectedTimeSlot?.startTime === slot.startTime
+                                                        ? 'var(--primary-color)'
+                                                        : 'var(--input-bg-color)',
+                                                color: '#fff',
+                                                border: 'none',
+                                                borderRadius: '5px',
+                                                cursor: 'pointer',
+                                                opacity: selectedTimeSlot?.date === slot.date && selectedTimeSlot?.startTime === slot.startTime ? 1 : 0.7,
+                                                transition: 'opacity 0.3s',
+                                            }}
+                                        >
+                                            {slot.date} ({slot.startTime} - {slot.endTime})
+                                        </button>
+                                    </li>
                                 ))}
                             </ul>
                         ) : (
@@ -133,20 +191,6 @@ const PlaceOrder = () => {
                         )}
                     </div>
                 )}
-
-                {/* Date */}
-                <label htmlFor="date" style={styles.label}>
-                    Date:
-                </label>
-                <input
-                    type="date"
-                    id="date"
-                    name="date"
-                    value={formData.date}
-                    onChange={handleChange}
-                    required
-                    style={styles.input}
-                />
 
                 {/* Location */}
                 <label htmlFor="location" style={styles.label}>
@@ -179,8 +223,8 @@ const PlaceOrder = () => {
                 />
 
                 {/* Submit Button */}
-                <button type="submit" style={styles.button}>
-                    Place Order
+                <button type="submit" style={styles.button} disabled={loading}>
+                    {loading ? 'Placing Order...' : 'Place Order'}
                 </button>
             </form>
         </div>

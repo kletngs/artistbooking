@@ -52,7 +52,7 @@ router.get('/bookings', authMiddleware, protectArtist, async (req, res) => {
     }
 });
 
-// Fetch artist availability by ID (existing route)
+// Fetch artist availability by ID
 router.get('/:id/availability', async (req, res) => {
     try {
         const artistId = req.params.id;
@@ -67,6 +67,49 @@ router.get('/:id/availability', async (req, res) => {
         res.status(200).json({ availability: artist.availability });
     } catch (err) {
         console.error('Error fetching artist availability:', err.message);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+// Check availability and booking conflicts
+router.post('/check-availability', async (req, res) => {
+    try {
+        const { artistId, date, startTime, endTime } = req.body;
+
+        // Find the artist
+        const artist = await Artist.findById(artistId);
+        if (!artist) {
+            return res.status(404).json({ error: 'Artist not found' });
+        }
+
+        // Check if the selected date/time is in the artist's availability
+        const isAvailable = artist.availability.some(
+            (slot) =>
+                slot.date.toISOString().split('T')[0] === date &&
+                slot.startTime <= startTime &&
+                slot.endTime >= endTime
+        );
+
+        if (!isAvailable) {
+            return res.status(400).json({ error: 'Selected date is not available.' });
+        }
+
+        // Check for booking conflicts
+        const isBooked = artist.bookings.some(
+            (booking) =>
+                booking.date.toISOString().split('T')[0] === date &&
+                booking.startTime <= startTime &&
+                booking.endTime >= endTime
+        );
+
+        if (isBooked) {
+            return res.status(400).json({ error: 'The selected time slot is already booked.' });
+        }
+
+        // If no conflicts, return success
+        res.status(200).json({ message: 'The selected date and time are available.' });
+    } catch (err) {
+        console.error('Error checking availability:', err.message);
         res.status(500).json({ error: 'Server error' });
     }
 });

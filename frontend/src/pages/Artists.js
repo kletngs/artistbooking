@@ -13,6 +13,7 @@ const Artists = () => {
         const fetchArtists = async () => {
             try {
                 const response = await axios.get('/api/artists'); // Replace with your API endpoint
+                console.log('Fetched artists:', response.data); // Log the fetched data
                 setArtists(response.data); // Set the fetched artists
                 setFilteredArtists(response.data); // Initialize filtered artists with all artists
                 setLoading(false); // Stop loading
@@ -46,8 +47,14 @@ const Artists = () => {
         return <p className="error-message">{error}</p>;
     }
 
-    // Get unique categories dynamically
-    const uniqueCategories = [...new Set(artists.map((artist) => artist.category))];
+    // Get unique categories dynamically with safeguards
+    const uniqueCategories = [
+        ...new Set(
+            artists
+                .map((artist) => artist.category)
+                .filter((category) => typeof category === 'string' && category.trim() !== '')
+        ),
+    ];
 
     return (
         <div className="artists-container">
@@ -63,7 +70,9 @@ const Artists = () => {
                     <option value="all">All</option>
                     {uniqueCategories.map((category) => (
                         <option key={category} value={category}>
-                            {category.charAt(0).toUpperCase() + category.slice(1)} {/* Capitalize first letter */}
+                            {typeof category === 'string' && category.trim() !== ''
+                                ? category.charAt(0).toUpperCase() + category.slice(1)
+                                : 'Uncategorized'} {/* Fallback for invalid categories */}
                         </option>
                     ))}
                 </select>
@@ -87,7 +96,7 @@ const Artists = () => {
                                 className="artist-image"
                             />
                             <h3>{artist.name}</h3>
-                            <p><strong>Category:</strong> {artist.category}</p>
+                            <p><strong>Category:</strong> {artist.category || 'Uncategorized'}</p>
                             <p><strong>Price Per Hour:</strong> ₮{artist.pricePerHour || 'N/A'}</p>
                             <p>{artist.bio || 'No bio available.'}</p>
                         </div>

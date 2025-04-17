@@ -11,7 +11,7 @@ const ManageArtists = () => {
     useEffect(() => {
         const fetchArtists = async () => {
             try {
-                const response = await axios.get('/api/admin/artists', {
+                const response = await axios.get('/api/artists', {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setArtists(response.data);
@@ -28,7 +28,7 @@ const ManageArtists = () => {
         if (!window.confirm('Are you sure you want to delete this artist?')) return;
 
         try {
-            await axios.delete(`/api/admin/artists/${id}`, {
+            await axios.delete(`/api/artists/${id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setArtists((prevArtists) => prevArtists.filter((artist) => artist._id !== id));
